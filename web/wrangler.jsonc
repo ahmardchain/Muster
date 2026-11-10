@@ -1,0 +1,11 @@
+// Cloudflare Workers config: serve the static export in ./out (built by `npx next build`).
+// No server code runs; the app reads Mezo directly from the browser.
+{
+  "name": "muster",
+  "compatibility_date": "2025-09-01",
+  "assets": {
+    "directory": "./out",
+    "not_found_handling": "404-page",
+    "html_handling": "auto-trailing-slash"
+  }
+}

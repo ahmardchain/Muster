@@ -64,9 +64,9 @@ npm install
 npm run dev
 ```
 
-The app builds to plain static files (`web/out`). To host it on Cloudflare Pages: import the repo, set the root
-directory to `web`, pick the "Next.js (Static HTML Export)" preset (build command `npx next build`, output `out`),
-and add the two variables from `.env.example`.
+The app builds to plain static files (`web/out`). To host it on Cloudflare (Workers), connect the repo, set the
+root directory to `web`, build command `npx next build`, deploy command `npx wrangler deploy`. `web/wrangler.jsonc`
+serves `out` as static assets, so no server code runs.
 
 To try everything locally without Mezo: run `npx hardhat node`, then
 `npx hardhat run scripts/local-seed.js --network localhost`, and paste the four lines it prints into `web/.env.local`.
