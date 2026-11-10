@@ -26,6 +26,7 @@ module.exports = {
     settings: { evmVersion: "london", optimizer: { enabled: true, runs: 200 } },
   },
   networks: {
+    localhost: { url: "http://127.0.0.1:8545" },
     mezotestnet: { url: "https://rpc.test.mezo.org", chainId: 31611, accounts },
   },
 };

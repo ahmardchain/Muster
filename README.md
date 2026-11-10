@@ -6,13 +6,13 @@ A Mezo app posts a quest ("open a trove", "hold 50 sMUSD", or its own rule) and 
 A user joins, does the action, and claims. The contract checks the action itself.
 While a quest is open, its escrow sits in Mezo's MUSD Savings Rate vault (sMUSD).
 
-Status: contract and tests only. No frontend yet, not deployed yet.
+Status: contract, tests and web app are written. Not deployed to Mezo testnet yet.
 
 ## How it works
 
 | Step | Call | What the contract enforces |
 |---|---|---|
-| Post | `createQuest` | Pulls `reward × slots` MUSD and deposits all of it into sMUSD |
+| Post | `createQuest` | Pulls `reward × slots` MUSD and deposits all of it into sMUSD; stores a title and link so users know what to do |
 | Join | `join` | Reverts if the wallet already passes the check, so only actions taken after joining pay |
 | Claim | `claim` | Re-checks on-chain, at least one block after joining, then withdraws from sMUSD and pays |
 | Close | `closeQuest` | Creator gets unclaimed escrow back, only after the deadline |
@@ -41,9 +41,31 @@ npx hardhat test
 
 If the native compiler download is blocked, use `MUSTER_SOLCJS=1 npx hardhat test`.
 
+## Web app
+
+`web/` is a Next.js app: a quest list, a quest page (join, do the action, claim) and a page to post a quest.
+Quests are readable without a wallet. Wallet connection uses Mezo Passport (RainbowKit).
+
+```
+cd web
+cp .env.example .env.local   # set NEXT_PUBLIC_MUSTER_ADDRESS
+npm install
+npm run dev
+```
+
+To host it on Vercel, import the repo, set the root directory to `web`, and add the two variables from `.env.example`.
+
+To try everything locally without Mezo: run `npx hardhat node`, then
+`npx hardhat run scripts/local-seed.js --network localhost`, and paste the four lines it prints into `web/.env.local`.
+
+## What has been tested
+
+- 15 contract tests (Hardhat) against mocks shaped like the real vault and TroveManager.
+- The web app's join, claim, post and refused-join flows, run in a browser against a local Hardhat chain.
+- Not yet run against Mezo testnet, and wallet connection through Mezo Passport has not been tried with a real wallet.
+
 ## Known limits
 
-- Tests run against mocks shaped like the real vault and TroveManager. Not yet run on Mezo testnet.
 - A wallet with capital can do an action, claim, and undo it. Muster proves the action happened after joining, not that the user stayed.
 - One person can use many wallets. Quest creators should price rewards with that in mind.
 - If the sMUSD vault cannot serve a withdrawal, claims and refunds wait until it can.

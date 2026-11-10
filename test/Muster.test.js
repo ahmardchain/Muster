@@ -18,9 +18,9 @@ describe("Muster", () => {
     return (await time.latest()) + days * DAY;
   }
 
-  async function newQuest({ kind = Check.TroveActive, target = ethers.ZeroAddress, threshold = 0, reward = E(10), slots = 3, days = 7 } = {}) {
+  async function newQuest({ kind = Check.TroveActive, target = ethers.ZeroAddress, threshold = 0, reward = E(10), slots = 3, days = 7, title = "Open a MUSD loan", url = "https://mezo.org" } = {}) {
     const id = await muster.questCount();
-    await muster.connect(creator).createQuest(kind, target, threshold, reward, slots, await deadlineIn(days));
+    await muster.connect(creator).createQuest(kind, target, threshold, reward, slots, await deadlineIn(days), title, url);
     return id;
   }
 
@@ -47,20 +47,24 @@ describe("Muster", () => {
     it("rejects bad parameters", async () => {
       const d = await deadlineIn(7);
       const c = muster.connect(creator);
-      await expect(c.createQuest(0, ethers.ZeroAddress, 0, 0, 3, d)).to.be.revertedWithCustomError(muster, "BadParams");
-      await expect(c.createQuest(0, ethers.ZeroAddress, 0, E(1), 0, d)).to.be.revertedWithCustomError(muster, "BadParams");
-      await expect(c.createQuest(0, ethers.ZeroAddress, 0, E(1), 1, 1)).to.be.revertedWithCustomError(muster, "BadParams");
-      await expect(c.createQuest(0, ethers.ZeroAddress, 0, E(1), 1, await deadlineIn(91))).to.be.revertedWithCustomError(muster, "BadParams");
+      await expect(c.createQuest(0, ethers.ZeroAddress, 0, 0, 3, d, "t", "")).to.be.revertedWithCustomError(muster, "BadParams");
+      await expect(c.createQuest(0, ethers.ZeroAddress, 0, E(1), 0, d, "t", "")).to.be.revertedWithCustomError(muster, "BadParams");
+      await expect(c.createQuest(0, ethers.ZeroAddress, 0, E(1), 1, 1, "t", "")).to.be.revertedWithCustomError(muster, "BadParams");
+      await expect(c.createQuest(0, ethers.ZeroAddress, 0, E(1), 1, await deadlineIn(91), "t", "")).to.be.revertedWithCustomError(muster, "BadParams");
       // a check target must be a contract
-      await expect(c.createQuest(Check.Custom, alice.address, 0, E(1), 1, d)).to.be.revertedWithCustomError(muster, "BadParams");
-      await expect(c.createQuest(Check.BalanceAtLeast, musd.target, 0, E(1), 1, d)).to.be.revertedWithCustomError(muster, "BadParams");
+      await expect(c.createQuest(Check.Custom, alice.address, 0, E(1), 1, d, "t", "")).to.be.revertedWithCustomError(muster, "BadParams");
+      await expect(c.createQuest(Check.BalanceAtLeast, musd.target, 0, E(1), 1, d, "t", "")).to.be.revertedWithCustomError(muster, "BadParams");
+      // a title is required and both strings are length-capped
+      await expect(c.createQuest(0, ethers.ZeroAddress, 0, E(1), 1, d, "", "")).to.be.revertedWithCustomError(muster, "BadParams");
+      await expect(c.createQuest(0, ethers.ZeroAddress, 0, E(1), 1, d, "x".repeat(81), "")).to.be.revertedWithCustomError(muster, "BadParams");
+      await expect(c.createQuest(0, ethers.ZeroAddress, 0, E(1), 1, d, "t", "x".repeat(201))).to.be.revertedWithCustomError(muster, "BadParams");
     });
 
     it("refuses a vault that does not credit the full deposit", async () => {
       const bad = await (await ethers.getContractFactory("ShortSavings")).deploy(musd.target);
       const m2 = await (await ethers.getContractFactory("Muster")).deploy(musd.target, bad.target, tm.target, treasury.address);
       await musd.connect(creator).approve(m2.target, ethers.MaxUint256);
-      await expect(m2.connect(creator).createQuest(0, ethers.ZeroAddress, 0, E(1), 1, await deadlineIn(1))).to.be.revertedWithCustomError(m2, "SavingsMismatch");
+      await expect(m2.connect(creator).createQuest(0, ethers.ZeroAddress, 0, E(1), 1, await deadlineIn(1), "t", "")).to.be.revertedWithCustomError(m2, "SavingsMismatch");
     });
   });
 

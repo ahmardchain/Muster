@@ -34,12 +34,17 @@ contract Muster is ReentrancyGuard {
         address target;
         uint256 threshold;
         uint256 reward; // MUSD paid per claim
+        uint32 slots; // how many wallets can be paid in total
         uint32 slotsLeft;
         uint64 deadline;
         bool closed;
+        string title; // what the user must do, in plain words
+        string url; // where to do it
     }
 
     uint256 public constant MAX_DURATION = 90 days;
+    uint256 public constant MAX_TITLE = 80;
+    uint256 public constant MAX_URL = 200;
     uint256 private constant CHECK_GAS = 200_000;
     uint8 private constant TROVE_ACTIVE = 1;
 
@@ -116,14 +121,18 @@ contract Muster is ReentrancyGuard {
         uint256 threshold,
         uint256 reward,
         uint32 slots,
-        uint64 deadline
+        uint64 deadline,
+        string calldata title,
+        string calldata url
     ) external nonReentrant returns (uint256 id) {
         if (reward == 0 || slots == 0) revert BadParams();
+        if (bytes(title).length == 0 || bytes(title).length > MAX_TITLE || bytes(url).length > MAX_URL) {
+            revert BadParams();
+        }
         if (deadline <= block.timestamp || deadline > block.timestamp + MAX_DURATION) revert BadParams();
         if (check != Check.TroveActive && target.code.length == 0) revert BadParams();
         if (check == Check.BalanceAtLeast && threshold == 0) revert BadParams();
 
-        uint256 total = reward * slots;
         id = _quests.length;
         _quests.push(
             Quest({
@@ -132,18 +141,15 @@ contract Muster is ReentrancyGuard {
                 target: target,
                 threshold: threshold,
                 reward: reward,
+                slots: slots,
                 slotsLeft: slots,
                 deadline: deadline,
-                closed: false
+                closed: false,
+                title: title,
+                url: url
             })
         );
-        escrowed += total;
-
-        musd.safeTransferFrom(msg.sender, address(this), total);
-        uint256 before = savings.balanceOf(address(this));
-        musd.forceApprove(address(savings), total);
-        savings.deposit(total);
-        if (savings.balanceOf(address(this)) - before != total) revert SavingsMismatch();
+        _fund(reward * slots);
 
         emit QuestCreated(id, msg.sender, check, target, threshold, reward, slots, deadline);
     }
@@ -245,6 +251,16 @@ contract Muster is ReentrancyGuard {
     // ------------------------------------------------------------------
     // Internal
     // ------------------------------------------------------------------
+
+    /// @dev Pull MUSD from the caller and park all of it in the savings vault.
+    function _fund(uint256 total) private {
+        escrowed += total;
+        musd.safeTransferFrom(msg.sender, address(this), total);
+        uint256 before = savings.balanceOf(address(this));
+        musd.forceApprove(address(savings), total);
+        savings.deposit(total);
+        if (savings.balanceOf(address(this)) - before != total) revert SavingsMismatch();
+    }
 
     function _quest(uint256 id) private view returns (Quest storage) {
         if (id >= _quests.length) revert NoSuchQuest();

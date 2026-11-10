@@ -1,0 +1,52 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    background: #e8eee3;
+    color: #13271d;
+    -webkit-text-size-adjust: 100%;
+  }
+  body {
+    font-family: "Public Sans Variable", system-ui, sans-serif;
+    font-size: 17px;
+    line-height: 1.55;
+  }
+  :focus-visible {
+    outline: 3px solid #b8301a;
+    outline-offset: 2px;
+  }
+  ::selection {
+    background: #13271d;
+    color: #e8eee3;
+  }
+}
+
+@layer components {
+  .btn {
+    @apply inline-flex min-h-[44px] items-center justify-center border-2 border-ink bg-ink px-5 py-2 text-base font-semibold text-paper transition-colors hover:bg-transparent hover:text-ink disabled:cursor-not-allowed disabled:border-rule disabled:bg-transparent disabled:text-ink-soft;
+  }
+  .btn-quiet {
+    @apply inline-flex min-h-[44px] items-center justify-center border-2 border-ink px-5 py-2 text-base font-semibold text-ink transition-colors hover:bg-ink hover:text-paper;
+  }
+  .field {
+    @apply block w-full border-2 border-ink bg-raised px-3 py-2.5 text-base text-ink placeholder:text-ink-soft/70;
+  }
+  .label {
+    @apply mb-1.5 block text-[15px] font-semibold;
+  }
+  .hint {
+    @apply mt-1.5 text-sm text-ink-soft;
+  }
+  .notice {
+    @apply border-l-4 border-stamp bg-raised px-4 py-3 text-[15px];
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    transition: none !important;
+    animation: none !important;
+  }
+}
