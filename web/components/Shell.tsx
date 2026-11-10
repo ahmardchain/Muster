@@ -31,6 +31,9 @@ export default function Shell({ children }: { children: ReactNode }) {
             <Link href="/post" className="underline-offset-4 hover:underline">
               Post a quest
             </Link>
+            <Link href="/demo" className="underline-offset-4 hover:underline">
+              Demo
+            </Link>
           </nav>
           <div className="ml-auto">
             <ConnectButton showBalance={false} chainStatus="icon" accountStatus="address" />

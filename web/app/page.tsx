@@ -44,6 +44,13 @@ export default function Home() {
               Post a quest
             </Link>
           </div>
+          <p className="mt-4 text-[15px]">
+            Judging?{" "}
+            <Link href="/demo" className="font-semibold underline underline-offset-4">
+              Watch one payout step by step, no wallet needed
+            </Link>
+            .
+          </p>
         </div>
         <ol className="self-end border-t-2 border-ink">
           {STEPS.map((s, i) => (
