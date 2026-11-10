@@ -9,7 +9,7 @@ export const EXPLORER = "https://explorer.test.mezo.org";
 // Mezo testnet (chain 31611). MUSD and TroveManager come from mezo-org/musd;
 // sMUSD is the MUSD Savings Rate vault verified on the testnet explorer.
 export const ADDR = {
-  muster: env(process.env.NEXT_PUBLIC_MUSTER_ADDRESS, ""),
+  muster: env(process.env.NEXT_PUBLIC_MUSTER_ADDRESS, "0x4639eA15F20DF8C35D1AD80EAA6E884182823fc4"),
   musd: env(process.env.NEXT_PUBLIC_MUSD_ADDRESS, "0x118917a40FAF1CD7a13dB0Ef56C86De7973Ac503"),
   smusd: env(process.env.NEXT_PUBLIC_SMUSD_ADDRESS, "0x6f461c68B2c5492C0F5CCEc5a264d692aA7A8e16"),
 };
