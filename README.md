@@ -32,6 +32,17 @@ No owner, no upgrade, no pause. Creators pay no fee: Muster earns the savings yi
 
 The sMUSD vault is not ERC-4626: `deposit(uint256)`, `withdraw(uint256)`, `claimYield()`, 1:1 shares.
 
+## Deploy the contract
+
+With Hardhat:
+
+```
+DEPLOYER_KEY=0x... TREASURY=0x... npx hardhat run scripts/deploy.js --network mezotestnet
+```
+
+Or without installing anything: open `flat/MusterFlat.sol` in Remix, compile with 0.8.28, EVM version london,
+optimizer on (200 runs), and deploy `Muster` with the MUSD, sMUSD and TroveManager addresses above plus your treasury wallet.
+
 ## Run the tests
 
 ```
@@ -53,7 +64,9 @@ npm install
 npm run dev
 ```
 
-To host it on Vercel, import the repo, set the root directory to `web`, and add the two variables from `.env.example`.
+The app builds to plain static files (`web/out`). To host it on Cloudflare Pages: import the repo, set the root
+directory to `web`, pick the "Next.js (Static HTML Export)" preset (build command `npx next build`, output `out`),
+and add the two variables from `.env.example`.
 
 To try everything locally without Mezo: run `npx hardhat node`, then
 `npx hardhat run scripts/local-seed.js --network localhost`, and paste the four lines it prints into `web/.env.local`.

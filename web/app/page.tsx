@@ -96,7 +96,7 @@ export default function Home() {
               return (
                 <li key={id} className="border-b border-rule">
                   <Link
-                    href={`/quest/${id}`}
+                    href={`/quest?id=${id}`}
                     className="grid gap-x-8 gap-y-3 py-5 hover:bg-raised sm:grid-cols-[1fr_9rem_13rem] sm:items-center sm:px-3"
                   >
                     <div>

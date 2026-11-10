@@ -1,6 +1,8 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
+  // Static files only (written to web/out), so any static host can serve it.
+  output: "export",
   // These Mezo wallet packages ship TypeScript source.
   transpilePackages: ["@mezo-org/orangekit-contracts", "@mezo-org/orangekit-smart-account"],
   webpack: (config) => {

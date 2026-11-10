@@ -1,7 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { useParams } from "next/navigation";
+import { Suspense } from "react";
+import { useSearchParams } from "next/navigation";
 import { useAccount, useReadContract, useReadContracts } from "wagmi";
 import { useConnectModal } from "@rainbow-me/rainbowkit";
 import Roll from "@/components/Roll";
@@ -12,10 +13,20 @@ import { useTx } from "@/lib/useTx";
 
 const base = { address: ADDR.muster, abi: musterAbi, chainId: CHAIN_ID } as const;
 
+// The quest number comes from the address (?id=3) so the whole site can be
+// served as static files.
 export default function QuestPage() {
-  const params = useParams<{ id: string }>();
-  const valid = /^\d+$/.test(params.id);
-  const id = valid ? Number(params.id) : 0;
+  return (
+    <Suspense fallback={<p className="mt-12 text-ink-soft">Reading the quest from Mezo…</p>}>
+      <QuestView />
+    </Suspense>
+  );
+}
+
+function QuestView() {
+  const raw = useSearchParams().get("id") ?? "";
+  const valid = /^\d+$/.test(raw);
+  const id = valid ? Number(raw) : 0;
   const { address } = useAccount();
   const { openConnectModal } = useConnectModal();
   const { quest: q, isLoading, error, refetch } = useQuest(id);
