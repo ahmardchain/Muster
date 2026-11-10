@@ -6,7 +6,7 @@ import { useSearchParams } from "next/navigation";
 import { useAccount, useReadContract, useReadContracts } from "wagmi";
 import { useConnectModal } from "@rainbow-me/rainbowkit";
 import Roll from "@/components/Roll";
-import { ADDR, CHAIN_ID, CHECK, DEPLOYED, EXPLORER, erc20Abi, musterAbi } from "@/lib/contracts";
+import { ADDR, CHAIN_ID, CHECK, DEPLOYED, EXPLORER, HIDDEN, erc20Abi, musterAbi } from "@/lib/contracts";
 import { checkText, musd, questState, shortAddr, timeLeft } from "@/lib/format";
 import { useQuest } from "@/lib/useQuests";
 import { useTx } from "@/lib/useTx";
@@ -81,6 +81,12 @@ function QuestView() {
       <Link href="/#quests" className="text-[15px] font-medium underline underline-offset-4">
         All quests
       </Link>
+
+      {HIDDEN.has(id) && (
+        <p className="notice mt-6 max-w-prose">
+          This quest is hidden from the list because its title doesn&rsquo;t match its check. The check below is what the contract uses.
+        </p>
+      )}
 
       <header className="mt-6 grid gap-8 border-b border-ink pb-10 md:grid-cols-[1.4fr_1fr] md:gap-16">
         <div>

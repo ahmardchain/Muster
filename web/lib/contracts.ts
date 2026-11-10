@@ -16,6 +16,10 @@ export const ADDR = {
 
 export const DEPLOYED = ADDR.muster.length === 42;
 
+// Quests left out of the list. They stay on-chain and reachable by direct link.
+// 0: posted on Mezo testnet with a title that doesn't match its check.
+export const HIDDEN = new Set<number>(LOCAL_RPC ? [] : [0]);
+
 export const musterAbi = parseAbi([
   "struct Quest { address creator; uint8 check; address target; uint256 threshold; uint256 reward; uint32 slots; uint32 slotsLeft; uint64 deadline; bool closed; string title; string url; }",
   "function questCount() view returns (uint256)",

@@ -1,7 +1,7 @@
 "use client";
 
 import { useReadContract, useReadContracts } from "wagmi";
-import { ADDR, CHAIN_ID, DEPLOYED, musterAbi, type Quest } from "./contracts";
+import { ADDR, CHAIN_ID, DEPLOYED, HIDDEN, musterAbi, type Quest } from "./contracts";
 
 const base = { address: ADDR.muster, abi: musterAbi, chainId: CHAIN_ID } as const;
 
@@ -14,7 +14,9 @@ export function useQuests() {
     contracts: Array.from({ length: n }, (_, i) => ({ ...base, functionName: "getQuest" as const, args: [BigInt(i)] as const })),
     query: { enabled: DEPLOYED && n > 0, refetchInterval: 15_000 },
   });
-  const quests = ((list.data ?? []) as unknown as Quest[]).map((q, id) => ({ id, q })).reverse();
+  const quests = ((list.data ?? []) as unknown as Quest[]).map((q, id) => ({ id, q }))
+    .filter(({ id }) => !HIDDEN.has(id))
+    .reverse();
   return {
     quests,
     isLoading: count.isLoading || (n > 0 && list.isLoading),
