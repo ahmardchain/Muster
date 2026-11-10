@@ -31,11 +31,11 @@ export default function Shell({ children }: { children: ReactNode }) {
             <Link href="/post" className="underline-offset-4 hover:underline">
               Post a quest
             </Link>
-            <Link href="/demo" className="underline-offset-4 hover:underline">
-              Demo
-            </Link>
           </nav>
-          <div className="ml-auto">
+          <div className="ml-auto flex items-center gap-3">
+            <Link href="/demo" className="inline-flex min-h-[40px] items-center border-2 border-ink px-4 text-[15px] font-semibold hover:bg-ink hover:text-paper">
+              Try demo
+            </Link>
             <ConnectButton showBalance={false} chainStatus="icon" accountStatus="address" />
           </div>
         </div>

@@ -47,7 +47,7 @@ export default function Home() {
           <p className="mt-4 text-[15px]">
             Judging?{" "}
             <Link href="/demo" className="font-semibold underline underline-offset-4">
-              Watch one payout step by step, no wallet needed
+              Try it with a demo wallet, no real wallet needed
             </Link>
             .
           </p>
