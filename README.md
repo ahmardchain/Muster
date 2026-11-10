@@ -6,7 +6,7 @@ A Mezo app posts a quest ("open a trove", "hold 50 sMUSD", or its own rule) and 
 A user joins, does the action, and claims. The contract checks the action itself.
 While a quest is open, its escrow sits in Mezo's MUSD Savings Rate vault (sMUSD).
 
-Status: deployed on Mezo testnet at [`0x4639eA15F20DF8C35D1AD80EAA6E884182823fc4`](https://explorer.test.mezo.org/address/0x4639eA15F20DF8C35D1AD80EAA6E884182823fc4). No quests posted yet.
+Status: deployed on Mezo testnet at [`0x4639eA15F20DF8C35D1AD80EAA6E884182823fc4`](https://explorer.test.mezo.org/address/0x4639eA15F20DF8C35D1AD80EAA6E884182823fc4). Source verified on the explorer (partial match). No quests posted yet.
 
 ## How it works
 
