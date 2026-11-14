@@ -169,6 +169,9 @@ sequenceDiagram
 | Wallet joined before acting | [tx 0xe53a…f0f0](https://explorer.test.mezo.org/tx/0xe53aee4a7cda8a1f8e00097e7c7c8408585c596d59ceb15147ba972a875ef0f0) |
 | Wallet saved 50 MUSD on Mezo's own vault | [tx 0xd724…6744](https://explorer.test.mezo.org/tx/0xd72499f7e98305dcd8b962eccef3866339f08dba173c97097d744721188b6744) |
 | Claim: sMUSD burned, 5 MUSD paid out | [tx 0x6a75…c3ab](https://explorer.test.mezo.org/tx/0x6a75775dcc36df2523860b83db94a46c7811e284fff8bedd7dbed880560fc3ab?tab=token_transfers) |
+| **Second wallet**, full flow: join | [tx 0xf617…b12f](https://explorer.test.mezo.org/tx/0xf6179bb06f20d054e49bda4435100cc6043d035b9db02dadc0948e7155c9b12f) |
+| Second wallet saves 50 MUSD on Mezo | [tx 0x04ea…c274](https://explorer.test.mezo.org/tx/0x04ea23341ca27794fee78c74edd5da0d7c373a321a3f5927436061398645c274) |
+| Second wallet claims 5 MUSD | [tx 0x6d15…b3a0](https://explorer.test.mezo.org/tx/0x6d157d0f36c97eeec50d6a80676b1f2e470ea67a6c8c672d6eecac947538b3a0?tab=token_transfers) |
 
 The live site's home page and `/demo` show the contract's current numbers: places paid, MUSD owed, and sMUSD held. The last two always match.
 
@@ -229,7 +232,7 @@ External checks are gas-capped (200k) and wrapped in `try/catch`, so a broken or
 | Live site reading quests from the chain | ✅ Real |
 | `/demo` demo wallet | 🛠️ Simulated in the browser, same rules as the contract, labelled on the page |
 | Contract tests | 🛠️ Mocks shaped like the real sMUSD vault and TroveManager |
-| First claim | The team's own wallet, as a test |
+| Claims so far | Two test wallets, both the team's: the poster's wallet and a separate second wallet ([`0xDc7d…F639`](https://explorer.test.mezo.org/address/0xDc7d207a3197Fd7d880956770B9d0E606257F639)) |
 | QR-code (WalletConnect) wallet connection | Not configured; browser and in-app wallets work |
 
 ## Hackathon requirements and criteria

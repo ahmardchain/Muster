@@ -37,7 +37,8 @@ Proof on Mezo testnet
 - Post (escrow into sMUSD): https://explorer.test.mezo.org/tx/0x19bc2f6f7c4600b8edaea28634c112ad63f837438f07536112b0fc00f177efed
 - Join: https://explorer.test.mezo.org/tx/0xe53aee4a7cda8a1f8e00097e7c7c8408585c596d59ceb15147ba972a875ef0f0
 - Claim (paid out of sMUSD): https://explorer.test.mezo.org/tx/0x6a75775dcc36df2523860b83db94a46c7811e284fff8bedd7dbed880560fc3ab
-The first claim was a test by the team wallet. 15 Hardhat tests cover escrow accounting, join/claim rules and refunds.
+Second wallet, full flow (join, save 50 MUSD on Mezo, claim): https://explorer.test.mezo.org/tx/0x6d157d0f36c97eeec50d6a80676b1f2e470ea67a6c8c672d6eecac947538b3a0
+Both claims so far are from the team's own test wallets. 15 Hardhat tests cover escrow accounting, join/claim rules and refunds.
 
 Target group: Mezo ecosystem teams that need verifiable first users, and users who want to try Mezo and get paid for it. Desktop and mobile wallet browsers.
 Tech: Solidity 0.8.28, OpenZeppelin, Hardhat; Next.js static export, TypeScript, wagmi, viem, RainbowKit with Mezo Passport; Cloudflare Workers.
